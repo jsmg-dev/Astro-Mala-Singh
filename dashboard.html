@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — Astro Mala Singh</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <canvas id="galaxy-canvas" aria-hidden="true"></canvas>
+    <div class="site-wrap">
+        <div id="site-header"></div>
+        <main>
+            <div class="container dashboard-layout">
+                <aside class="glass sidebar">
+                    <nav>
+                        <a href="dashboard.html" class="active">Dashboard</a>
+                        <a href="profile.html">User Profile</a>
+                        <a href="reports.html">My Reports</a>
+                        <a href="payments.html">Payments</a>
+                        <a href="#">Wallet</a>
+                        <a href="#">Settings</a>
+                        <a href="#">Referral</a>
+                        <a href="#">Coupons</a>
+                        <a href="#">Notifications</a>
+                        <a href="admin.html">Admin Panel</a>
+                    </nav>
+                </aside>
+                <div class="dashboard-main">
+                    <h1 style="font-family:var(--font-heading);color:var(--gold);margin-bottom:24px;">My Dashboard</h1>
+                    <div class="stat-grid">
+                        <div class="glass stat-card"><h3>3</h3><p>My Readings</p></div>
+                        <div class="glass stat-card"><h3>1</h3><p>My Reports</p></div>
+                        <div class="glass stat-card"><h3>₹0</h3><p>Wallet</p></div>
+                        <div class="glass stat-card"><h3>1</h3><p>Free Left</p></div>
+                    </div>
+                    <div class="glass glass-card">
+                        <h3 style="color:var(--gold);margin-bottom:16px;">Recent Readings</h3>
+                        <table class="data-table">
+                            <thead><tr><th>Date</th><th>Type</th><th>Status</th><th>Action</th></tr></thead>
+                            <tbody>
+                                <tr><td>Today</td><td>Psychic Chat</td><td><span class="admin-badge success">Complete</span></td><td><a href="reports.html" style="color:var(--gold);">View</a></td></tr>
+                                <tr><td>—</td><td>Palm Reading</td><td><span class="admin-badge pending">Pending</span></td><td><a href="palm-reading.html" style="color:var(--gold);">Start</a></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <div id="site-footer"></div>
+    </div>
+    <script src="js/main.js"></script>
+</body>
+</html>

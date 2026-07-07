@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Reports — Astro Mala Singh</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <canvas id="galaxy-canvas" aria-hidden="true"></canvas>
+    <div class="site-wrap">
+        <div id="site-header"></div>
+        <main>
+            <div class="container dashboard-layout">
+                <aside class="glass sidebar">
+                    <nav>
+                        <a href="dashboard.html">Dashboard</a>
+                        <a href="profile.html">User Profile</a>
+                        <a href="reports.html" class="active">My Reports</a>
+                        <a href="payments.html">Payments</a>
+                    </nav>
+                </aside>
+                <div class="dashboard-main">
+                    <h1 style="font-family:var(--font-heading);color:var(--gold);margin-bottom:24px;">My Reports</h1>
+                    <div class="glass glass-card">
+                        <table class="data-table">
+                            <thead><tr><th>Report</th><th>Type</th><th>Date</th><th>Actions</th></tr></thead>
+                            <tbody>
+                                <tr>
+                                    <td>Spiritual Guidance #001</td>
+                                    <td>Psychic</td>
+                                    <td>Demo</td>
+                                    <td>
+                                        <a href="#" style="color:var(--gold);margin-right:12px;" onclick="alert('PDF download (demo)');return false;">PDF</a>
+                                        <a href="https://wa.me/919166010400" style="color:var(--muted);">WhatsApp</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p style="color:var(--muted);font-size:0.88rem;margin-top:16px;">Premium reports appear here after ₹1001 consultation.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <div id="site-footer"></div>
+    </div>
+    <script src="js/main.js"></script>
+</body>
+</html>

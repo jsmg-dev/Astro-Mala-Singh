@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment History — Astro Mala Singh</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <canvas id="galaxy-canvas" aria-hidden="true"></canvas>
+    <div class="site-wrap">
+        <div id="site-header"></div>
+        <main>
+            <div class="container dashboard-layout">
+                <aside class="glass sidebar">
+                    <nav>
+                        <a href="dashboard.html">Dashboard</a>
+                        <a href="profile.html">User Profile</a>
+                        <a href="reports.html">My Reports</a>
+                        <a href="payments.html" class="active">Payments</a>
+                    </nav>
+                </aside>
+                <div class="dashboard-main">
+                    <h1 style="font-family:var(--font-heading);color:var(--gold);margin-bottom:24px;">Payment History</h1>
+                    <div class="glass glass-card">
+                        <table class="data-table">
+                            <thead><tr><th>ID</th><th>Amount</th><th>Method</th><th>Status</th><th>Date</th></tr></thead>
+                            <tbody>
+                                <tr><td colspan="5" style="text-align:center;padding:32px;">No payments yet. <a href="pricing.html" style="color:var(--gold);">Get Premium ₹1001</a></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <div id="site-footer"></div>
+    </div>
+    <script src="js/main.js"></script>
+</body>
+</html>

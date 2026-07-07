@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Reading — Astro Mala Singh</title>
+    <meta name="description" content="AI face reading from your selfie. Personality, career, relationships & leadership insights.">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <canvas id="galaxy-canvas" aria-hidden="true"></canvas>
+    <div class="site-wrap">
+        <div id="site-header"></div>
+        <main>
+            <div class="page-hero">
+                <div class="container">
+                    <h1>👤 Face Reading</h1>
+                    <p>Upload a clear selfie for AI facial analysis</p>
+                </div>
+            </div>
+            <section class="section">
+                <div class="container" style="max-width:600px;">
+                    <div class="glass glass-card reveal">
+                        <h3 style="color:var(--gold);font-family:var(--font-heading);margin-bottom:16px;">Upload Selfie</h3>
+                        <label class="upload-zone">
+                            <input type="file" accept="image/*" capture="user">
+                            <p class="upload-label">📸 Front-facing clear photo in good light</p>
+                            <img class="upload-preview" alt="" style="display:none;max-height:200px;margin:12px auto 0;border-radius:12px;">
+                        </label>
+                    </div>
+                    <div class="grid-2 reveal" style="margin-top:24px;">
+                        <div class="glass glass-card">
+                            <h4 style="color:var(--secondary);margin-bottom:10px;">AI Detects</h4>
+                            <ul class="tag-list"><li>Face Shape</li><li>Eyes</li><li>Nose</li><li>Lips</li><li>Forehead</li><li>Chin</li><li>Jawline</li></ul>
+                        </div>
+                        <div class="glass glass-card">
+                            <h4 style="color:var(--secondary);margin-bottom:10px;">You Receive</h4>
+                            <ul class="tag-list"><li>Personality</li><li>Career</li><li>Relationships</li><li>Leadership</li><li>Growth Suggestions</li></ul>
+                        </div>
+                    </div>
+                    <div style="text-align:center;margin-top:24px;" class="reveal">
+                        <a href="ai-chat.html" class="btn btn-gold">Start Face Reading</a>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <div id="site-footer"></div>
+    </div>
+    <script src="js/main.js"></script>
+</body>
+</html>

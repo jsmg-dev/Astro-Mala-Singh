@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel — Astro Mala Singh</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <canvas id="galaxy-canvas" aria-hidden="true"></canvas>
+    <div class="site-wrap">
+        <div id="site-header"></div>
+        <main>
+            <div class="container dashboard-layout">
+                <aside class="glass sidebar">
+                    <nav>
+                        <a href="admin.html" class="active">Dashboard</a>
+                        <a href="#">Users</a>
+                        <a href="#">Payments</a>
+                        <a href="#">Reports</a>
+                        <a href="blog.html">Blogs</a>
+                        <a href="#">Coupons</a>
+                        <a href="#">Analytics</a>
+                        <a href="#">AI Usage</a>
+                        <a href="#">Revenue</a>
+                    </nav>
+                </aside>
+                <div class="dashboard-main">
+                    <h1 style="font-family:var(--font-heading);color:var(--gold);margin-bottom:24px;">Admin Dashboard</h1>
+                    <div class="stat-grid">
+                        <div class="glass stat-card"><h3>128</h3><p>Users</p></div>
+                        <div class="glass stat-card"><h3>₹45,045</h3><p>Revenue</p></div>
+                        <div class="glass stat-card"><h3>312</h3><p>AI Chats</p></div>
+                        <div class="glass stat-card"><h3>45</h3><p>Reports</p></div>
+                    </div>
+                    <div class="glass glass-card" style="margin-top:24px;">
+                        <h3 style="color:var(--gold);margin-bottom:16px;">Recent Payments</h3>
+                        <table class="data-table">
+                            <thead><tr><th>User</th><th>Amount</th><th>Gateway</th><th>Status</th></tr></thead>
+                            <tbody>
+                                <tr><td>demo@user.com</td><td>₹1001</td><td>Razorpay</td><td><span class="admin-badge success">Paid</span></td></tr>
+                                <tr><td>guest@user.com</td><td>₹1001</td><td>UPI</td><td><span class="admin-badge success">Paid</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <div id="site-footer"></div>
+    </div>
+    <script src="js/main.js"></script>
+</body>
+</html>

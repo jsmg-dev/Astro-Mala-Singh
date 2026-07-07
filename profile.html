@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile — Astro Mala Singh</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <canvas id="galaxy-canvas" aria-hidden="true"></canvas>
+    <div class="site-wrap">
+        <div id="site-header"></div>
+        <main>
+            <div class="container dashboard-layout">
+                <aside class="glass sidebar">
+                    <nav>
+                        <a href="dashboard.html">Dashboard</a>
+                        <a href="profile.html" class="active">User Profile</a>
+                        <a href="reports.html">My Reports</a>
+                        <a href="payments.html">Payments</a>
+                    </nav>
+                </aside>
+                <div class="dashboard-main">
+                    <h1 style="font-family:var(--font-heading);color:var(--gold);margin-bottom:24px;">User Profile</h1>
+                    <form class="glass glass-card" onsubmit="event.preventDefault();alert('Profile saved (demo).');">
+                        <div class="form-group"><label>Full Name</label><input type="text" value="Guest User"></div>
+                        <div class="form-group"><label>Email</label><input type="email" value="user@example.com"></div>
+                        <div class="form-group"><label>Phone</label><input type="tel" placeholder="+91..."></div>
+                        <div class="form-group"><label>Date of Birth</label><input type="date"></div>
+                        <div class="form-group"><label>Birth Place</label><input type="text" placeholder="City, India"></div>
+                        <button type="submit" class="btn btn-glow">Save Profile</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+        <div id="site-footer"></div>
+    </div>
+    <script src="js/main.js"></script>
+</body>
+</html>
