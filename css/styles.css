@@ -873,3 +873,25 @@ main { flex: 1; }
 
     .sidebar { position: static; }
 }
+
+
+.rudhraksh-photos {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.rudhraksh-photo {
+    flex: 1;
+    max-width: 50%;
+}
+
+.rudhraksh-photo img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    border-radius: 12px;
+}
