@@ -895,3 +895,95 @@ main { flex: 1; }
     object-fit: cover;
     border-radius: 12px;
 }
+.rudhraksh-slider {
+    overflow: hidden;
+    width: 100%;
+}
+
+.rudhraksh-track {
+    display: flex;
+    width: max-content;
+    gap: 24px;
+    animation: productsRight 18s linear infinite;
+}
+
+.rudhraksh-photo {
+    flex: 0 0 280px;
+    display: block;
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+.rudhraksh-photo img {
+    width: 280px;
+    height: 280px;
+    object-fit: cover;
+    display: block;
+}
+
+/* Right → left */
+@keyframes productsRight {
+    from {
+        transform: translateX(-50%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+.rudhraksh-track:hover {
+    animation-play-state: paused;
+}
+.rudhraksh-slider {
+    overflow: hidden;
+    width: 100%;
+}
+
+.rudhraksh-track {
+    display: flex;
+    width: max-content;
+    gap: 24px;
+    animation: gemstonesRight 18s linear infinite;
+}
+
+.rudhraksh-photo {
+    flex: 0 0 280px;
+    display: block;
+    border-radius: 18px;
+    overflow: hidden;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.rudhraksh-photo img {
+    width: 280px;
+    height: 280px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.rudhraksh-photo:hover {
+    transform: scale(1.05);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+}
+
+.rudhraksh-photo:hover img {
+    transform: scale(1.08);
+}
+
+/* Left → Right */
+@keyframes gemstonesRight {
+    from {
+        transform: translateX(-50%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+/* Pause when mouse is over gemstones */
+.rudhraksh-track:hover {
+    animation-play-state: paused;
+}
