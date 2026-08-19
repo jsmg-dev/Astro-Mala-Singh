@@ -316,3 +316,24 @@ document.addEventListener('DOMContentLoaded', () => {
     initChatDemo();
     initUploadZones();
 });
+document.querySelectorAll('.product-image').forEach(item => {
+    item.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+
+        modalImage.src = this.querySelector('img').src;
+        modal.classList.add('active');
+    });
+});
+
+document.querySelector('.image-modal-close').addEventListener('click', function () {
+    document.getElementById('imageModal').classList.remove('active');
+});
+
+document.getElementById('imageModal').addEventListener('click', function (e) {
+    if (e.target === this) {
+        this.classList.remove('active');
+    }
+});
