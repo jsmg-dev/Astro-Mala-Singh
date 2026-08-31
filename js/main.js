@@ -1181,6 +1181,36 @@ const PRODUCT_CATALOG = [
     { name: "Red Coral Gemstone", image: "./images/coral.PNG" }
 ];
 
+const GEMSTONE_NAMES = new Set([
+    "Ruby Gemstone",
+    "Neelam Blue Sapphire",
+    "Panna Emerald",
+    "Red Coral Gemstone"
+]);
+
+function isGemstone(name) {
+    return GEMSTONE_NAMES.has(name);
+}
+
+function askCarat(product) {
+    if (!isGemstone(product.name)) return null;
+
+    const value = window.prompt(
+        `${product.name}\n\nKitne carat ka gemstone lena hai?\nPlease carat (ct) mein quantity enter karein:`,
+        "1"
+    );
+
+    if (value === null) return null;
+
+    const carat = Number(value);
+    if (!Number.isFinite(carat) || carat <= 0) {
+        alert("Please valid carat quantity enter karein, jaise 1, 1.5, 2.");
+        return null;
+    }
+
+    return carat;
+}
+
 function getCart() {
     try {
         return JSON.parse(localStorage.getItem(CART_KEY)) || [];
@@ -1201,17 +1231,34 @@ function updateCartCount() {
 
 function addToCart(product, goToCart = false) {
     const cart = getCart();
-    const existing = cart.find(item => item.id === product.id);
+
+    let carat = null;
+    if (isGemstone(product.name)) {
+        carat = product.carat ?? askCarat(product);
+        if (carat === null) return;
+    }
+
+    const id = isGemstone(product.name)
+        ? `${product.id}-${carat}ct`
+        : product.id;
+
+    const existing = cart.find(item => item.id === id);
 
     if (existing) {
-        existing.qty += 1;
+        if (isGemstone(product.name)) {
+            existing.carat = carat;
+            existing.qty = 1;
+        } else {
+            existing.qty += 1;
+        }
     } else {
         cart.push({
-            id: product.id,
+            id,
             name: product.name,
             price: Number(product.price || 0),
             image: product.image,
-            qty: 1
+            qty: isGemstone(product.name) ? 1 : 1,
+            carat: isGemstone(product.name) ? carat : null
         });
     }
 
@@ -1428,15 +1475,26 @@ function initCartPage() {
         cart.forEach(item => {
             const row = document.createElement('div');
             row.className = 'cart-item glass';
+            const gemstoneText = isGemstone(item.name)
+                ? `<span class="selected-carat">Selected: ${item.carat} ct</span>`
+                : '';
+            const lineTotal = Number(item.price) > 0
+                ? Number(item.price) * (isGemstone(item.name) ? Number(item.carat) : Number(item.qty))
+                : 0;
+
             row.innerHTML = `
                 <img src="${item.image}" alt="${item.name}">
                 <div class="cart-item-info">
                     <h3>${item.name}</h3>
-                    <p>${Number(item.price) > 0 ? `₹${Number(item.price).toLocaleString('en-IN')}${['Ruby Gemstone','Neelam Blue Sapphire','Panna Emerald','Red Coral Gemstone'].includes(item.name) ? '/ct' : ''}` : 'Price on request'}</p>
+                    <p>${Number(item.price) > 0 ? `₹${Number(item.price).toLocaleString('en-IN')}${isGemstone(item.name) ? '/ct' : ''}` : 'Price on request'}</p>
+                    ${gemstoneText}
+                    ${Number(item.price) > 0 ? `<p class="cart-line-total">Item Total: ₹${lineTotal.toLocaleString('en-IN')}</p>` : ''}
                     <div class="qty-controls">
-                        <button type="button" data-action="minus" data-id="${item.id}">−</button>
-                        <strong>${item.qty}</strong>
-                        <button type="button" data-action="plus" data-id="${item.id}">+</button>
+                        ${isGemstone(item.name)
+                            ? `<button type="button" class="change-carat" data-action="carat" data-id="${item.id}">✎ Change Carat</button>`
+                            : `<button type="button" data-action="minus" data-id="${item.id}">−</button>
+                               <strong>${item.qty}</strong>
+                               <button type="button" data-action="plus" data-id="${item.id}">+</button>`}
                         <button type="button" class="remove-item" data-action="remove" data-id="${item.id}">Remove</button>
                     </div>
                 </div>
@@ -1446,7 +1504,10 @@ function initCartPage() {
 
         const priced = cart.filter(item => Number(item.price) > 0);
         const hasUnpriced = cart.some(item => Number(item.price) === 0);
-        const sum = priced.reduce((n, item) => n + Number(item.price) * item.qty, 0);
+        const sum = priced.reduce((n, item) => {
+            const units = isGemstone(item.name) ? Number(item.carat || 0) : Number(item.qty || 0);
+            return n + Number(item.price) * units;
+        }, 0);
 
         if (total) {
             total.textContent = priced.length
@@ -1465,6 +1526,24 @@ function initCartPage() {
 
         if (button.dataset.action === 'plus') item.qty += 1;
         if (button.dataset.action === 'minus') item.qty = Math.max(1, item.qty - 1);
+
+        if (button.dataset.action === 'carat') {
+            const value = window.prompt(
+                `${item.name}\n\nKitne carat ka gemstone lena hai?`,
+                String(item.carat || 1)
+            );
+            if (value === null) return;
+
+            const newCarat = Number(value);
+            if (!Number.isFinite(newCarat) || newCarat <= 0) {
+                alert("Please valid carat quantity enter karein, jaise 1, 1.5, 2.");
+                return;
+            }
+
+            item.carat = newCarat;
+            item.id = `${productId(item.name, item.image)}-${newCarat}ct`;
+        }
+
         if (button.dataset.action === 'remove') {
             const index = cart.findIndex(p => p.id === button.dataset.id);
             cart.splice(index, 1);
@@ -1491,7 +1570,11 @@ function initCartPage() {
         }
 
         const data = new FormData(checkout);
-        const items = cart.map(item => `${item.name} x ${item.qty}`).join(', ');
+        const items = cart.map(item =>
+            isGemstone(item.name)
+                ? `${item.name} - ${item.carat} ct (₹${(Number(item.price) * Number(item.carat)).toLocaleString('en-IN')})`
+                : `${item.name} x ${item.qty}`
+        ).join(', ');
         const message =
             `Hello Astro Mala Singh, I want to order: ${items}. ` +
             `Name: ${data.get('name')}. Phone: ${data.get('phone')}. ` +

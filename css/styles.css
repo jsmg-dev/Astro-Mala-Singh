@@ -2106,3 +2106,19 @@ main {
         gap: 12px;
     }
 }
+
+.selected-carat {
+    display: inline-block;
+    margin: 2px 0 8px;
+    padding: 5px 9px;
+    border-radius: 7px;
+    background: rgba(251, 191, 36, .10);
+    color: var(--gold);
+    font-size: .78rem;
+    font-weight: 700;
+}
+
+.cart-line-total {
+    color: var(--gold) !important;
+    font-weight: 700;
+}
