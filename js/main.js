@@ -18,11 +18,13 @@ const NAV_LINKS = [
     { href: 'index.html', label: 'Home' },
     { href: 'about.html', label: 'About' },
     { href: 'astrologer.html', label: 'Our Astrologer' },
+    { href: 'products.html', label: 'Products' },
     { href: 'palm-reading.html', label: 'Palm Reading' },
     { href: 'face-reading.html', label: 'Face Reading' },
     { href: 'psychic-reading.html', label: 'Psychic Reading' },
     { href: 'ai-chat.html', label: 'AI Chat' },
     { href: 'pricing.html', label: 'Pricing' },
+    { href: 'cart.html', label: '🛒 Cart <span class="cart-count" id="cartCount">0</span>' },
     { href: 'blog.html', label: 'Blog' },
     { href: 'contact.html', label: 'Contact' },
     { href: 'faq.html', label: 'FAQ' }
@@ -1147,6 +1149,363 @@ function removeOldBrandIcon() {
 }
 
 
+
+/* =========================================================
+   PRODUCT CART / ORDER
+   ========================================================= */
+
+const CART_KEY = 'astroMalaSinghCart_v2';
+const PRODUCT_PRICES = {
+    "5 Mukhi Rudraksha": { price: 200, label: "₹200" },
+    "Pyrite": { price: 700, label: "₹700" },
+    "Dhan Yog": { price: 700, label: "₹700" },
+    "Healing Crystal Bracelet": { price: 1200, label: "₹1,200" },
+    "Crystal Shivling": { price: 60000, label: "₹60,000" },
+    "Crystal Shri Yantra": { price: 60000, label: "₹60,000" },
+    "Ruby Gemstone": { price: 300, label: "₹300/ct" },
+    "Neelam Blue Sapphire": { price: 400, label: "₹400/ct" },
+    "Panna Emerald": { price: 400, label: "₹400/ct" },
+    "Red Coral Gemstone": { price: 300, label: "₹300/ct" }
+};
+
+const PRODUCT_CATALOG = [
+    { name: "5 Mukhi Rudraksha", image: "./images/5mukhi.jpg" },
+    { name: "Pyrite", image: "./images/Pyrite.jpg" },
+    { name: "Dhan Yog", image: "./images/dhanyog.jpg" },
+    { name: "Healing Crystal Bracelet", image: "./images/healing-crystal-bracelet.jpg" },
+    { name: "Crystal Shivling", image: "./images/crystal-shivling.jpg" },
+    { name: "Crystal Shri Yantra", image: "./images/crystal-shri-yantra.jpg" },
+    { name: "Ruby Gemstone", image: "./images/rubby.jpg" },
+    { name: "Neelam Blue Sapphire", image: "./images/neelam.jpg" },
+    { name: "Panna Emerald", image: "./images/panna.jpg" },
+    { name: "Red Coral Gemstone", image: "./images/coral.PNG" }
+];
+
+function getCart() {
+    try {
+        return JSON.parse(localStorage.getItem(CART_KEY)) || [];
+    } catch (error) {
+        return [];
+    }
+}
+
+function saveCart(cart) {
+    localStorage.setItem(CART_KEY, JSON.stringify(cart));
+    updateCartCount();
+}
+
+function updateCartCount() {
+    const count = getCart().reduce((sum, item) => sum + Number(item.qty || 0), 0);
+    document.querySelectorAll('.cart-count').forEach(el => el.textContent = count);
+}
+
+function addToCart(product, goToCart = false) {
+    const cart = getCart();
+    const existing = cart.find(item => item.id === product.id);
+
+    if (existing) {
+        existing.qty += 1;
+    } else {
+        cart.push({
+            id: product.id,
+            name: product.name,
+            price: Number(product.price || 0),
+            image: product.image,
+            qty: 1
+        });
+    }
+
+    saveCart(cart);
+
+    if (goToCart) {
+        window.location.href = 'cart.html';
+        return;
+    }
+
+    const button = document.querySelector(`.add-to-cart[data-id="${CSS.escape(product.id)}"]`);
+    if (button) {
+        const old = button.innerHTML;
+        button.innerHTML = '✓ Added';
+        setTimeout(() => button.innerHTML = old, 1200);
+    }
+}
+
+function productId(name, image) {
+    return `${name}-${image}`.toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '');
+}
+
+function buildShopCard(product) {
+    const pricing = PRODUCT_PRICES[product.name] || { price: 0, label: 'Price on request' };
+    const isPerCarat = /\/ct$/.test(pricing.label);
+    const id = productId(product.name, product.image);
+
+    const card = document.createElement('article');
+    card.className = 'shop-card glass';
+    card.dataset.productId = id;
+
+    card.innerHTML = `
+        <button type="button" class="shop-image product-image"
+            data-image="${product.image}" data-name="${product.name}">
+            <img src="${product.image}" alt="${product.name}" loading="lazy">
+        </button>
+        <div class="shop-info">
+            <h3>${product.name}</h3>
+            <p class="shop-price">${pricing.label}</p>
+            ${isPerCarat ? '<p class="shop-unit">Price per carat (ct)</p>' : ''}
+            <div class="shop-actions">
+                <button type="button" class="btn btn-outline btn-sm add-to-cart"
+                    data-id="${id}" data-name="${product.name}" data-price="${pricing.price}" data-image="${product.image}">
+                    🛒 Add to Cart
+                </button>
+                <button type="button" class="btn btn-gold btn-sm buy-now"
+                    data-id="${id}" data-name="${product.name}" data-price="${pricing.price}" data-image="${product.image}">
+                    Order Now
+                </button>
+            </div>
+        </div>
+    `;
+    return card;
+}
+
+function wireShopButtons() {
+    document.querySelectorAll('.add-to-cart, .buy-now').forEach(button => {
+        if (button.dataset.wired === '1') return;
+        button.dataset.wired = '1';
+
+        button.addEventListener('click', event => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            addToCart({
+                id: button.dataset.id,
+                name: button.dataset.name,
+                price: button.dataset.price,
+                image: button.dataset.image
+            }, button.classList.contains('buy-now'));
+        });
+    });
+}
+
+function initManualSliderControls() {
+    document.querySelectorAll('.rudhraksh-slider').forEach(slider => {
+        if (slider.dataset.controlsReady === '1') return;
+
+        const track = slider.querySelector('.rudhraksh-track');
+        if (!track) return;
+
+        slider.dataset.controlsReady = '1';
+        slider.classList.add('manual-slider');
+
+        const prev = document.createElement('button');
+        prev.type = 'button';
+        prev.className = 'slider-arrow slider-prev';
+        prev.setAttribute('aria-label', 'Previous products');
+        prev.innerHTML = '‹';
+
+        const next = document.createElement('button');
+        next.type = 'button';
+        next.className = 'slider-arrow slider-next';
+        next.setAttribute('aria-label', 'Next products');
+        next.innerHTML = '›';
+
+        slider.appendChild(prev);
+        slider.appendChild(next);
+
+        const move = direction => {
+            const amount = Math.max(track.clientWidth * 0.72, 260);
+            track.scrollBy({ left: direction * amount, behavior: 'smooth' });
+        };
+
+        prev.addEventListener('click', () => move(-1));
+        next.addEventListener('click', () => move(1));
+    });
+}
+
+function initShop() {
+    const tracks = document.querySelectorAll('.products-track, .gemstones-track');
+
+    tracks.forEach(track => {
+        const seen = new Set();
+        const oldItems = Array.from(track.querySelectorAll('.product-image'));
+
+        oldItems.forEach(item => {
+            const img = item.querySelector('img');
+            if (!img) return;
+
+            const name = img.alt || 'Product';
+            const image = item.dataset.image || img.getAttribute('src');
+            const id = productId(name, image);
+
+            if (seen.has(id)) {
+                item.remove();
+                return;
+            }
+            seen.add(id);
+
+            item.replaceWith(buildShopCard({ name, image }));
+        });
+    });
+
+    wireShopButtons();
+    initManualSliderControls();
+    updateCartCount();
+}
+
+function initProductsPage() {
+    const root = document.getElementById('products-catalog');
+    if (!root) return;
+
+    root.innerHTML = '';
+    PRODUCT_CATALOG.forEach(product => {
+        root.appendChild(buildShopCard(product));
+    });
+
+    wireShopButtons();
+    updateCartCount();
+}
+
+function initProductImages() {
+    const modal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    const closeButton = document.querySelector('.image-modal-close');
+    if (!modal || !modalImage) return;
+
+    document.querySelectorAll('.product-image').forEach(item => {
+        item.addEventListener('click', event => {
+            if (event.target.closest('.add-to-cart, .buy-now')) return;
+
+            const image = item.querySelector('img');
+            const src = item.dataset.image || image?.src;
+            if (!src) return;
+
+            modalImage.src = src;
+            modalImage.alt = item.dataset.name || image?.alt || 'Product Preview';
+            modal.classList.add('active');
+        });
+    });
+
+    closeButton?.addEventListener('click', () => {
+        modal.classList.remove('active');
+        modalImage.src = '';
+    });
+
+    modal.addEventListener('click', event => {
+        if (event.target === modal) {
+            modal.classList.remove('active');
+            modalImage.src = '';
+        }
+    });
+
+    document.addEventListener('keydown', event => {
+        if (event.key === 'Escape') {
+            modal.classList.remove('active');
+            modalImage.src = '';
+        }
+    });
+}
+
+function initCartPage() {
+    const list = document.getElementById('cart-items');
+    const empty = document.getElementById('cart-empty');
+    const total = document.getElementById('cart-total');
+    const checkout = document.getElementById('checkout-form');
+    if (!list) return;
+
+    function render() {
+        const cart = getCart();
+        list.innerHTML = '';
+
+        if (!cart.length) {
+            empty?.classList.remove('hidden');
+            if (total) total.textContent = 'Price on request';
+            return;
+        }
+
+        empty?.classList.add('hidden');
+
+        cart.forEach(item => {
+            const row = document.createElement('div');
+            row.className = 'cart-item glass';
+            row.innerHTML = `
+                <img src="${item.image}" alt="${item.name}">
+                <div class="cart-item-info">
+                    <h3>${item.name}</h3>
+                    <p>${Number(item.price) > 0 ? `₹${Number(item.price).toLocaleString('en-IN')}${['Ruby Gemstone','Neelam Blue Sapphire','Panna Emerald','Red Coral Gemstone'].includes(item.name) ? '/ct' : ''}` : 'Price on request'}</p>
+                    <div class="qty-controls">
+                        <button type="button" data-action="minus" data-id="${item.id}">−</button>
+                        <strong>${item.qty}</strong>
+                        <button type="button" data-action="plus" data-id="${item.id}">+</button>
+                        <button type="button" class="remove-item" data-action="remove" data-id="${item.id}">Remove</button>
+                    </div>
+                </div>
+            `;
+            list.appendChild(row);
+        });
+
+        const priced = cart.filter(item => Number(item.price) > 0);
+        const hasUnpriced = cart.some(item => Number(item.price) === 0);
+        const sum = priced.reduce((n, item) => n + Number(item.price) * item.qty, 0);
+
+        if (total) {
+            total.textContent = priced.length
+                ? `₹${sum.toLocaleString('en-IN')}${hasUnpriced ? ' + price on request' : ''}`
+                : 'Price on request';
+        }
+    }
+
+    list.addEventListener('click', event => {
+        const button = event.target.closest('[data-action]');
+        if (!button) return;
+
+        const cart = getCart();
+        const item = cart.find(p => p.id === button.dataset.id);
+        if (!item) return;
+
+        if (button.dataset.action === 'plus') item.qty += 1;
+        if (button.dataset.action === 'minus') item.qty = Math.max(1, item.qty - 1);
+        if (button.dataset.action === 'remove') {
+            const index = cart.findIndex(p => p.id === button.dataset.id);
+            cart.splice(index, 1);
+        }
+
+        saveCart(cart);
+        render();
+    });
+
+    const clearCart = document.getElementById('clear-cart');
+    clearCart?.addEventListener('click', () => {
+        localStorage.removeItem(CART_KEY);
+        render();
+        updateCartCount();
+    });
+
+    checkout?.addEventListener('submit', event => {
+        event.preventDefault();
+
+        const cart = getCart();
+        if (!cart.length) {
+            alert('Please add at least one product to your cart.');
+            return;
+        }
+
+        const data = new FormData(checkout);
+        const items = cart.map(item => `${item.name} x ${item.qty}`).join(', ');
+        const message =
+            `Hello Astro Mala Singh, I want to order: ${items}. ` +
+            `Name: ${data.get('name')}. Phone: ${data.get('phone')}. ` +
+            `Address: ${data.get('address')}.`;
+
+        window.open(
+            `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(message)}`,
+            '_blank'
+        );
+    });
+
+    render();
+}
+
 /* =========================================================
    INITIALIZE WEBSITE
    ========================================================= */
@@ -1170,6 +1529,11 @@ document.addEventListener(
         initChatDemo();
 
         initUploadZones();
+
+        initShop();
+        initProductsPage();
+        initProductImages();
+        initCartPage();
 
     }
 );

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart & Order — Astro Mala Singh</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <canvas id="galaxy-canvas" aria-hidden="true"></canvas>
+
+    <div class="site-wrap">
+        <div id="site-header"></div>
+
+        <main>
+            <section class="page-hero">
+                <div class="container">
+                    <h1>🛒 Your Cart</h1>
+                    <p>Review your products and place your order directly on WhatsApp.</p>
+                </div>
+            </section>
+
+            <section class="section" style="padding-top:20px;">
+                <div class="container cart-layout">
+                    <div>
+                        <div id="cart-items" class="cart-items"></div>
+
+                        <div id="cart-empty" class="glass glass-card hidden">
+                            <h3 style="color:var(--gold);margin-bottom:8px;">Your cart is empty</h3>
+                            <p style="color:var(--muted);margin-bottom:18px;">
+                                Add Rudraksha, crystals or gemstones from the Products section.
+                            </p>
+                            <a href="index.html#products" class="btn btn-gold">Browse Products</a>
+                        </div>
+                    </div>
+
+                    <aside class="glass glass-card cart-summary">
+                        <h2 style="font-family:var(--font-heading);color:var(--gold);margin-bottom:8px;">
+                            Order Details
+                        </h2>
+                        <p class="checkout-note">
+                            Gemstone prices are per carat (ct). For gemstones, quantity 1 means 1 ct.
+                        </p>
+
+                        <div class="cart-total-row">
+                            <span>Total</span>
+                            <strong id="cart-total">Price on request</strong>
+                        </div>
+                        <button id="clear-cart" type="button" class="btn btn-outline full-width" style="margin-bottom:14px;">
+                            🗑 Clear Cart
+                        </button>
+
+                        <form id="checkout-form" class="checkout-form">
+                            <label>
+                                Full Name
+                                <input name="name" type="text" placeholder="Your name" required>
+                            </label>
+
+                            <label>
+                                WhatsApp / Phone
+                                <input name="phone" type="tel" placeholder="+91..." required>
+                            </label>
+
+                            <label>
+                                Delivery Address
+                                <textarea name="address" rows="4" placeholder="Complete delivery address" required></textarea>
+                            </label>
+
+                            <button class="btn btn-gold full-width" type="submit">
+                                📲 Place Order on WhatsApp
+                            </button>
+                        </form>
+                    </aside>
+                </div>
+            </section>
+        </main>
+
+        <div id="site-footer"></div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
